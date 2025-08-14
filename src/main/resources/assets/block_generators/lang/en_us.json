@@ -1,0 +1,12 @@
+{
+  "item.block_generators.speed_upgrade": "Speed Upgrade",
+  "item.block_generators.vertical_offset_upgrade": "Vertical Offset Upgrade",
+  "item.block_generators.inventory_output_upgrade": "Inventory Output Upgrade",
+  "item.block_generators.redstone_infused_iron": "Redstone Infused Iron",
+  "item.block_generators.upgrade_base": "Upgrade Base",
+
+  "creativeTab.block_generators_tab": "Block Generators",
+
+  "block.block_generators.block_generator": "Block Generator",
+  "block.block_generators.generator_base": "Generator Base"
+}
