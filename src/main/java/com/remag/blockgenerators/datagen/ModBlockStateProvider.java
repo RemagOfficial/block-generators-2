@@ -26,20 +26,25 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         cubeColumnBlock(ModBlocks.BLOCK_GENERATOR.get(),
                 modLoc("block/block_generator_side"),
-                modLoc("block/block_generator_top"));
+                modLoc("block/block_generator_top"),
+                modLoc("block/block_generator_bottom"));
 
-        blockWithItem(ModBlocks.GENERATOR_BASE);
+        cubeColumnBlockNoRotation(ModBlocks.GENERATOR_BASE.get(),
+                modLoc("block/block_generator_base_side"),
+                modLoc("block/block_generator_base_top"),
+                modLoc("block/block_generator_base_top"));
     }
 
-    public void cubeColumnBlock(Block block, ResourceLocation sideTexture, ResourceLocation endTexture) {
+    public void cubeColumnBlock(Block block, ResourceLocation sideTexture, ResourceLocation topTexture, ResourceLocation bottomTexture) {
         String name = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
 
-        // --- Create the cube_column block model ---
-        models().withExistingParent(name, "block/cube_column")
+        // Use the custom parent model
+        models().withExistingParent(name, modLoc("block/block_generator_model"))
                 .texture("side", sideTexture)
-                .texture("end", endTexture);
+                .texture("end", topTexture)          // top face
+                .texture("end_bottom", bottomTexture); // bottom face
 
-        // --- Create blockstate variants for horizontal facing ---
+        // Blockstate rotation for horizontal facing
         getVariantBuilder(block).forAllStates(state -> {
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
@@ -57,7 +62,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .build();
         });
 
-        // --- Create the item model pointing to the block model ---
+        // Item model
+        simpleBlockItem(block, models().getExistingFile(modLoc("block/" + name)));
+    }
+
+    public void cubeColumnBlockNoRotation(Block block, ResourceLocation sideTexture, ResourceLocation topTexture, ResourceLocation bottomTexture) {
+        String name = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
+
+        // Create the block model with separate textures
+        models().withExistingParent(name, modLoc("block/block_generator_model"))
+                .texture("side", sideTexture)
+                .texture("end", topTexture)          // top face
+                .texture("end_bottom", bottomTexture); // bottom face
+
+        // Blockstate without rotation: just one model for all states
+        getVariantBuilder(block).forAllStates(state ->
+                ConfiguredModel.builder()
+                        .modelFile(models().getExistingFile(modLoc("block/" + name)))
+                        .build()
+        );
+
+        // Item model
         simpleBlockItem(block, models().getExistingFile(modLoc("block/" + name)));
     }
 

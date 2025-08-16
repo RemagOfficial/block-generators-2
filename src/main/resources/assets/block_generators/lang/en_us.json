@@ -1,11 +1,21 @@
 {
   "item.block_generators.speed_upgrade": "Speed Upgrade",
+  "item.block_generators.speed_upgrade.tooltip.line1": "Increases the generator's speed.",
+  "item.block_generators.speed_upgrade.tooltip.line2": "Max Upgrades: 16",
+
   "item.block_generators.vertical_offset_upgrade": "Vertical Offset Upgrade",
+  "item.block_generators.vertical_offset_upgrade.tooltip.line1": "Adjusts the generator's vertical placement.",
+  "item.block_generators.vertical_offset_upgrade.tooltip.line2": "Max Upgrades: 64",
+
   "item.block_generators.inventory_output_upgrade": "Inventory Output Upgrade",
+  "item.block_generators.inventory_output_upgrade.tooltip.line1": "Sends generated blocks directly into an inventory.",
+  "item.block_generators.inventory_output_upgrade.tooltip.line2": "Max Upgrades: 1",
+
   "item.block_generators.redstone_infused_iron": "Redstone Infused Iron",
   "item.block_generators.upgrade_base": "Upgrade Base",
 
   "creativeTab.block_generators_tab": "Block Generators",
+  "jei.block_generators.block_generator": "Block Generator Accepted Items",
 
   "block.block_generators.block_generator": "Block Generator",
   "block.block_generators.generator_base": "Generator Base"
