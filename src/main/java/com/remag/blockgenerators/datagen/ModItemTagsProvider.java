@@ -27,13 +27,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         // Create your custom tag
         TagKey<Item> blockGenInputTag = ItemTags.create(ResourceLocation.fromNamespaceAndPath(BlockGenerators.MODID, "block_generator_input"));
+        TagKey<Item> blockGenMiscTag = ItemTags.create(ResourceLocation.fromNamespaceAndPath(BlockGenerators.MODID, "block_generator_misc"));
 
         // Add vanilla ores tag to it
-        tag(blockGenInputTag)
-                .addTag(Tags.Items.ORES)                    // ores
-                .addTag(Tags.Items.STONE)                   // all stone variants
-                .addTag(Tags.Items.COBBLESTONE)             // cobble + variants
-                .add(Blocks.ANDESITE.asItem(), Blocks.DIORITE.asItem(), Blocks.GRANITE.asItem(), Blocks.COBBLED_DEEPSLATE.asItem(), Blocks.DEEPSLATE.asItem())
+        tag(blockGenMiscTag)
+                // .add(Blocks.ANDESITE.asItem(), Blocks.DIORITE.asItem(), Blocks.GRANITE.asItem(), Blocks.COBBLED_DEEPSLATE.asItem(), Blocks.DEEPSLATE.asItem())
                 .add(Items.DIRT, Items.GRAVEL, Items.SAND, Items.RED_SAND, Items.CLAY) // extra vanilla non-renewables
                 .add(Items.SOUL_SOIL, Items.NETHERRACK, Items.BASALT, Items.BLACKSTONE, Items.END_STONE) // nether/end materials
                 .add(Items.ICE, Items.PACKED_ICE, Items.BLUE_ICE, Items.SNOW_BLOCK, Items.DRIPSTONE_BLOCK); // ice, snow, dripstone

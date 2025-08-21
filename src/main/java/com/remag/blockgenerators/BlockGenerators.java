@@ -51,8 +51,8 @@ public class BlockGenerators
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        ModItems.registerAllUpgrades();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

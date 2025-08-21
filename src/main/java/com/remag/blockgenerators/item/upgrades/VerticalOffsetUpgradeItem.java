@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class VerticalOffsetUpgradeItem extends Item {
+public class VerticalOffsetUpgradeItem extends GenericUpgradeItem {
     public VerticalOffsetUpgradeItem(Properties properties) {
         super(properties);
     }

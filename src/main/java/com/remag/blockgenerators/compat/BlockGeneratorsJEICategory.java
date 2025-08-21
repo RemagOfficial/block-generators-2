@@ -2,6 +2,7 @@ package com.remag.blockgenerators.compat;
 
 import com.remag.blockgenerators.BlockGenerators;
 import com.remag.blockgenerators.block.ModBlocks;
+import com.remag.blockgenerators.item.upgrades.TypeUpgradeItem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,12 +11,15 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 public class BlockGeneratorsJEICategory implements IRecipeCategory<BlockGeneratorsJEICategory.Wrapper> {
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(BlockGenerators.MODID, "block_generator");
@@ -61,14 +65,13 @@ public class BlockGeneratorsJEICategory implements IRecipeCategory<BlockGenerato
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, Wrapper recipe, IFocusGroup focuses) {
-        // Layout the items in a 3x5 grid
         int columns = 10;
         int rows = 6;
-        int startX = 1; // x-offset for the grid
-        int startY = 1;  // y-offset for the grid
+        int startX = 1;
+        int startY = 1;
         int slotSize = 18;
 
-        List<ItemStack> items = recipe.outputs;
+        List<ItemStack> items = recipe.items; // use your Wrapper's item list
         for (int i = 0; i < items.size(); i++) {
             int col = i % columns;
             int row = i / columns;
@@ -76,15 +79,32 @@ public class BlockGeneratorsJEICategory implements IRecipeCategory<BlockGenerato
             int x = startX + col * slotSize;
             int y = startY + row * slotSize;
 
+            ItemStack stack = items.get(i); // current item for this slot
+
             builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
-                    .addItemStack(items.get(i));
+                    .addItemStack(stack)
+                    .addTooltipCallback((hoveredStack, tooltip) -> {
+                        // Look up the upgrade for this specific item
+                        TypeUpgradeItem upgrade = recipe.upgrades.get(stack.getItem());
+                        if (upgrade != null) {
+                            Component upgradeName = upgrade.getDefaultInstance().getDisplayName();
+                            tooltip.add(Component.translatable("jei.block_generators.requires_upgrade", upgradeName)
+                                    .withStyle(ChatFormatting.YELLOW));
+                        } else {
+                            tooltip.add(Component.translatable("jei.block_generators.misc_block")
+                                    .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
         }
     }
 
     public static class Wrapper {
-        public final List<ItemStack> outputs;
-        public Wrapper(List<ItemStack> outputs) {
-            this.outputs = new ArrayList<>(outputs);
+        public final List<ItemStack> items;
+        public final Map<Item, TypeUpgradeItem> upgrades; // store upgrade per item
+
+        public Wrapper(List<ItemStack> items, Map<Item, TypeUpgradeItem> upgrades) {
+            this.items = items;
+            this.upgrades = upgrades;
         }
     }
 }

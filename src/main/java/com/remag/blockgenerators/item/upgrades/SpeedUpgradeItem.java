@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SpeedUpgradeItem extends Item {
+public class SpeedUpgradeItem extends GenericUpgradeItem {
     public SpeedUpgradeItem(Properties properties) {
         super(properties);
     }

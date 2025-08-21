@@ -11,11 +11,21 @@
   "item.block_generators.inventory_output_upgrade.tooltip.line1": "Sends generated blocks directly into an inventory.",
   "item.block_generators.inventory_output_upgrade.tooltip.line2": "Max Upgrades: 1",
 
+  "item.block_generators.ore_type_upgrade": "Ore Generator Upgrade",
+  "item.block_generators.stone_type_upgrade": "Stone Generator Upgrade",
+  "item.block_generators.cobblestone_type_upgrade": "Cobblestone Generator Upgrade",
+
+  "tooltip.block_generators.type_upgrade.ores": "Allows generation of Ores",
+  "tooltip.block_generators.type_upgrade.stone": "Allows generation of Stone Variants",
+  "tooltip.block_generators.type_upgrade.cobblestone": "Allows generation of Cobblestone Variants",
+
   "item.block_generators.redstone_infused_iron": "Redstone Infused Iron",
   "item.block_generators.upgrade_base": "Upgrade Base",
 
   "creativeTab.block_generators_tab": "Block Generators",
   "jei.block_generators.block_generator": "Block Generator Accepted Items",
+  "jei.block_generators.requires_upgrade": "Requires: %s",
+  "jei.block_generators.misc_block": "Usable without upgrade",
 
   "block.block_generators.block_generator": "Block Generator",
   "block.block_generators.generator_base": "Generator Base"

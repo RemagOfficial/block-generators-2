@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class InventoryOutputUpgradeItem extends Item {
+public class InventoryOutputUpgradeItem extends GenericUpgradeItem {
     public InventoryOutputUpgradeItem(Properties properties) {
         super(properties);
     }

@@ -4,6 +4,7 @@ import com.remag.blockgenerators.Config;
 import com.remag.blockgenerators.gui.menu.BlockGeneratorMenu;
 import com.remag.blockgenerators.item.upgrades.InventoryOutputUpgradeItem;
 import com.remag.blockgenerators.item.upgrades.SpeedUpgradeItem;
+import com.remag.blockgenerators.item.upgrades.TypeUpgradeItem;
 import com.remag.blockgenerators.item.upgrades.VerticalOffsetUpgradeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BlockGeneratorBlockEntity extends BlockEntity implements MenuProvider {
 
-    private static final int SLOT_COUNT = 4;
+    private static final int SLOT_COUNT = 5;
     private ItemStack cachedRenderStack = ItemStack.EMPTY;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
@@ -63,6 +64,7 @@ public class BlockGeneratorBlockEntity extends BlockEntity implements MenuProvid
             if (slot == 1) return stack.getItem() instanceof SpeedUpgradeItem;
             if (slot == 2) return stack.getItem() instanceof VerticalOffsetUpgradeItem;
             if (slot == 3) return stack.getItem() instanceof InventoryOutputUpgradeItem;
+            if (slot == 4) return stack.getItem() instanceof TypeUpgradeItem;
             return false;
         }
 
@@ -196,9 +198,17 @@ public class BlockGeneratorBlockEntity extends BlockEntity implements MenuProvid
             ItemStack speedUpgrade = handler.getStackInSlot(1);
             ItemStack verticalOffset = handler.getStackInSlot(2);
             ItemStack inventoryOutput = handler.getStackInSlot(3);
+            ItemStack typeUpgrade = handler.getStackInSlot(4);
 
             if (stack.isEmpty() || !(stack.getItem() instanceof BlockItem blockItem)) {
                 return;
+            }
+
+            // --- Check type upgrade ---
+            if (!typeUpgrade.isEmpty() && typeUpgrade.getItem() instanceof TypeUpgradeItem upgrade) {
+                if (!stack.getItem().builtInRegistryHolder().is(upgrade.getAllowedBlocks())) {
+                    return; // block not allowed by upgrade
+                }
             }
 
             // --- Determine vertical offset ---

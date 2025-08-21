@@ -25,6 +25,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.SPEED_UPGRADE.get());
                         pOutput.accept(ModItems.VERTICAL_OFFSET_UPGRADE.get());
                         pOutput.accept(ModItems.INVENTORY_OUTPUT_UPGRADE.get());
+                        pOutput.accept(ModItems.COBBLESTONE_TYPE_UPGRADE.get());
+                        pOutput.accept(ModItems.STONE_TYPE_UPGRADE.get());
+                        pOutput.accept(ModItems.ORE_TYPE_UPGRADE.get());
                         pOutput.accept(ModItems.REDSTONE_INFUSED_IRON.get());
                     })
                     .build());

@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
 
@@ -90,6 +91,36 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('B', ModItems.UPGRADE_BASE.get())
                 .define('R', Items.REDSTONE)
                 .unlockedBy(getHasName(ModItems.UPGRADE_BASE.get()), has(ModItems.UPGRADE_BASE.get()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ORE_TYPE_UPGRADE.get())
+                .pattern("GOG")
+                .pattern("OBO")
+                .pattern("GOG")
+                .define('O', Tags.Items.ORES)
+                .define('G', Items.GOLD_INGOT)
+                .define('B', ModItems.UPGRADE_BASE.get())
+                .unlockedBy("has_block_generator", has(ModItems.BLOCK_GENERATOR_BLOCK_ITEM.get()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COBBLESTONE_TYPE_UPGRADE.get())
+                .pattern("GCG")
+                .pattern("CBC")
+                .pattern("GCG")
+                .define('C', Tags.Items.COBBLESTONE)
+                .define('G', Items.GOLD_INGOT)
+                .define('B', ModItems.UPGRADE_BASE.get())
+                .unlockedBy("has_block_generator", has(ModItems.BLOCK_GENERATOR_BLOCK_ITEM.get()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STONE_TYPE_UPGRADE.get())
+                .pattern("GSG")
+                .pattern("SBS")
+                .pattern("GSG")
+                .define('S', Tags.Items.STONE)
+                .define('G', Items.GOLD_INGOT)
+                .define('B', ModItems.UPGRADE_BASE.get())
+                .unlockedBy("has_block_generator", has(ModItems.BLOCK_GENERATOR_BLOCK_ITEM.get()))
                 .save(consumer);
     }
 }

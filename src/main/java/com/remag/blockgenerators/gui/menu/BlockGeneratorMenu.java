@@ -2,27 +2,24 @@ package com.remag.blockgenerators.gui.menu;
 
 import com.remag.blockgenerators.block.ModBlocks;
 import com.remag.blockgenerators.block.entities.BlockGeneratorBlockEntity;
-import com.remag.blockgenerators.gui.TagRestrictedSlot;
 import com.remag.blockgenerators.gui.UpgradeSlot;
 import com.remag.blockgenerators.item.upgrades.InventoryOutputUpgradeItem;
 import com.remag.blockgenerators.item.upgrades.SpeedUpgradeItem;
+import com.remag.blockgenerators.item.upgrades.TypeUpgradeItem;
 import com.remag.blockgenerators.item.upgrades.VerticalOffsetUpgradeItem;
 import com.remag.blockgenerators.util.ModTags;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockGeneratorMenu extends AbstractContainerMenu {
     public final BlockGeneratorBlockEntity blockEntity;
     private final ContainerData data;
     private final Inventory playerInventory;
-    private final TagKey<Item> slotRestrictionTag = ModTags.BLOCK_GEN_INPUTS;
 
     public BlockGeneratorMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv,
@@ -38,17 +35,31 @@ public class BlockGeneratorMenu extends AbstractContainerMenu {
 
         // Add our single input slot (index 0)
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new TagRestrictedSlot(handler, 0, 79, 22, slotRestrictionTag));
+            this.addSlot(new SlotItemHandler(handler, 0, 79, 22) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    ItemStack typeUpgrade = handler.getStackInSlot(4); // New type upgrade slot
+                    if (!typeUpgrade.isEmpty() && typeUpgrade.getItem() instanceof TypeUpgradeItem upgrade) {
+                        return stack.getItem().builtInRegistryHolder().is(upgrade.getAllowedBlocks());
+                    }
+                    // fallback to default tag restriction
+                    return stack.is(ModTags.BLOCK_GEN_MISC);
+                }
+            });
+            // this.addSlot(new TagRestrictedSlot(handler, 0, 79, 22, slotRestrictionTag));
 
             // --- Upgrade Slots ---
             // Slot 1 - speed upgrade
-            this.addSlot(new UpgradeSlot(handler, 1, 61, 56, SpeedUpgradeItem.class));
+            this.addSlot(new UpgradeSlot(handler, 1, 53, 56, SpeedUpgradeItem.class));
 
             // Slot 2 - vertical offset upgrade
-            this.addSlot(new UpgradeSlot(handler, 2, 79, 56, VerticalOffsetUpgradeItem.class));
+            this.addSlot(new UpgradeSlot(handler, 2, 71, 56, VerticalOffsetUpgradeItem.class));
 
             // Slot 3 - inventory output upgrade
-            this.addSlot(new UpgradeSlot(handler, 3, 97, 56, InventoryOutputUpgradeItem.class));
+            this.addSlot(new UpgradeSlot(handler, 3, 89, 56, InventoryOutputUpgradeItem.class));
+
+            // Slot 4 - type upgrade slot
+            this.addSlot(new UpgradeSlot(handler, 4, 107, 56, TypeUpgradeItem.class));
         });
 
         // Add player inventory + hotbar
@@ -92,13 +103,14 @@ public class BlockGeneratorMenu extends AbstractContainerMenu {
                 }
             } else {
                 // From player to tile
-                if (stack.is(slotRestrictionTag)) {
-                    if (!this.moveItemStackTo(stack, 0, 1, false)) { // main slot only
+                if (!stack.is(ModTags.BLOCK_GEN_MISC) || stack.getItem() instanceof TypeUpgradeItem) {
+                    // Try putting into any upgrade slot (1-4)
+                    if (!this.moveItemStackTo(stack, 1, 5, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else {
-                    // Allow putting into upgrade slots (1-3) without restriction
-                    if (!this.moveItemStackTo(stack, 1, 4, false)) {
+                    // Input slot (0)
+                    if (!this.moveItemStackTo(stack, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
                 }

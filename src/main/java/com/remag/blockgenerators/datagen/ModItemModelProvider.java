@@ -17,6 +17,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+
+        simpleItem(ModItems.ORE_TYPE_UPGRADE);
+        simpleItem(ModItems.COBBLESTONE_TYPE_UPGRADE);
+        simpleItem(ModItems.STONE_TYPE_UPGRADE);
+
         simpleItem(ModItems.INVENTORY_OUTPUT_UPGRADE);
         simpleItem(ModItems.SPEED_UPGRADE);
         simpleItem(ModItems.VERTICAL_OFFSET_UPGRADE);
@@ -24,9 +29,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.UPGRADE_BASE);
     }
 
-    private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
+    private <T extends Item> ItemModelBuilder simpleItem(RegistryObject<T> item) {
         return withExistingParent(item.getId().getPath(),
-                ResourceLocation.tryParse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(BlockGenerators.MODID,"item/" + item.getId().getPath()));
+                ResourceLocation.tryParse("item/generated"))
+                .texture("layer0",
+                        ResourceLocation.fromNamespaceAndPath(BlockGenerators.MODID, "item/" + item.getId().getPath()));
     }
 }
